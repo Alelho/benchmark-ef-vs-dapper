@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Benchmark.Data.Dapper
 {
-	internal class CompanyDapperRepository
+	public class CompanyDapperRepository
 	{
 		public CompanyDapperRepository()
 		{

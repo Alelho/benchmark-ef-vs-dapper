@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Benchmark.Benchmarks;
+using BenchmarkDotNet.Running;
+using System;
 
 namespace Benchmark
 {
@@ -6,7 +8,15 @@ namespace Benchmark
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
+#if DEBUG
+
+
+#else
+			new BenchmarkSwitcher(typeof(BenchmarkBase).Assembly).Run(args);
+
+			Console.WriteLine("Done!");
+			Console.ReadKey();
+#endif
 		}
 	}
 }
