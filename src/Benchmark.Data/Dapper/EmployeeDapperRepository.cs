@@ -22,8 +22,6 @@ namespace Benchmark.Data.Dapper
 				FROM Employees e
 				WHERE e.Id = @id";
 
-			var employeeDict = new Dictionary<long, Employee>();
-
 			var employee = connection.QuerySingle<Employee>(query, new { id });
 
 			return employee;

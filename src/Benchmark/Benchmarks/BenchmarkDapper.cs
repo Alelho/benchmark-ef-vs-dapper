@@ -1,10 +1,12 @@
 ﻿using Benchmark.Data.Entities;
 using BenchmarkDotNet.Attributes;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Benchmark.Benchmarks
 {
+	[Description("Dapper")]
 	public class BenchmarkDapper : BenchmarkBase
 	{
 		[GlobalSetup]
@@ -13,7 +15,7 @@ namespace Benchmark.Benchmarks
 			BaseSetup();
 		}
 
-		[Benchmark]
+		[Benchmark(Description = "GetEmployeeById")]
 		public Employee DapperGetEmployeeById()
 		{
 			var employee = new Employee();
@@ -26,7 +28,7 @@ namespace Benchmark.Benchmarks
 			return employee;
 		}
 
-		[Benchmark]
+		[Benchmark(Description = "GetEmployeeAndCompanyById")]
 		public Employee DapperGetEmployeeAndCompanyById()
 		{
 			var employee = new Employee();
@@ -39,15 +41,10 @@ namespace Benchmark.Benchmarks
 			return employee;
 		}
 
-		[Benchmark]
-		public ICollection<Company> DapperGetAllCompanies()
+		[Benchmark(Description = "Get1000Companies")]
+		public ICollection<Company> DapperGet1000Companies()
 		{
-			var companies = Enumerable.Empty<Company>();
-
-			for (var i = 0; i < Count; i++)
-			{
-				companies = _companyDapperRepository.GetAllCompanies();
-			}
+			var companies = _companyDapperRepository.Get1000Companies();
 
 			return companies.ToList();
 		}

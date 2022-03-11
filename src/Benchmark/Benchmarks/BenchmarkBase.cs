@@ -1,6 +1,7 @@
 ﻿using Benchmark.Data;
 using Benchmark.Data.Constants;
 using Benchmark.Data.Dapper;
+using Benchmark.Data.efcore;
 using Benchmark.Data.Entities;
 using BenchmarkDotNet.Attributes;
 using EFCoreUnitOfWork.Builders;
@@ -24,7 +25,7 @@ namespace Benchmark.Benchmarks
 		protected EmployeeDapperRepository _employeeDapperRepository;
 
 		protected IGenericRepository<Employee> _employeeEFCoreRepository;
-		protected IGenericRepository<Company> _companyEFCoreRepository;
+		protected CompanyRepository _companyEFCoreRepository;
 
 		public BenchmarkBase()
 		{
@@ -37,6 +38,7 @@ namespace Benchmark.Benchmarks
 		protected void BaseSetup()
 		{
 			var connectionString = ConnectionStrings.Value;
+
 			var services = new ServiceCollection();
 
 			services.AddDbContext<EmployeeDbContext>(options =>
@@ -44,13 +46,15 @@ namespace Benchmark.Benchmarks
 
 			services.AddUnitOfWork<EmployeeDbContext>();
 			services.AddTransient<DbContext, EmployeeDbContext>();
+
 			services.AddTransient<EmployeeDapperRepository>();
 			services.AddTransient<CompanyDapperRepository>();
 
 			var serviceProvider = services.BuildServiceProvider();
+
 			_uow = serviceProvider.GetService<IUnitOfWork<EmployeeDbContext>>();
 
-			_companyEFCoreRepository = _uow.GetGenericRepository<Company>();
+			_companyEFCoreRepository = _uow.GetRepository<CompanyRepository>();
 			_employeeEFCoreRepository = _uow.GetGenericRepository<Employee>();
 
 			_companyDapperRepository = serviceProvider.GetService<CompanyDapperRepository>();

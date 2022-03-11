@@ -1,10 +1,12 @@
 ﻿using Benchmark.Data.Entities;
 using BenchmarkDotNet.Attributes;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Benchmark.Benchmarks
 {
+	[Description(".NET 5")]
 	public class BenchmarkNET5 : BenchmarkBase
 	{
 		[GlobalSetup]
@@ -13,7 +15,7 @@ namespace Benchmark.Benchmarks
 			BaseSetup();
 		}
 
-		[Benchmark]
+		[Benchmark(Description = "GetEmployeeById")]
 		public Employee NET5GetEmployeeById()
 		{
 			var employee = new Employee();
@@ -26,7 +28,7 @@ namespace Benchmark.Benchmarks
 			return employee;
 		}
 
-		[Benchmark]
+		[Benchmark(Description = "GetEmployeeAndCompanyById")]
 		public Employee NET5GetEmployeeAndCompanyById()
 		{
 			var employee = new Employee();
@@ -39,15 +41,10 @@ namespace Benchmark.Benchmarks
 			return employee;
 		}
 
-		[Benchmark]
-		public ICollection<Company> NET5GetAllCompanies()
+		[Benchmark(Description = "Get1000Companies")]
+		public ICollection<Company> NET5Get1000Companies()
 		{
-			var companies = Enumerable.Empty<Company>();
-
-			for (var i = 0; i < Count; i++)
-			{
-				companies = _companyEFCoreRepository.Search(c => c.Id > 0);
-			}
+			var companies = _companyEFCoreRepository.Get1000Companies();
 
 			return companies.ToList();
 		}

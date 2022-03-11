@@ -12,13 +12,14 @@ namespace Benchmark.Data.Dapper
 		{
 		}
 
-		public IEnumerable<Company> GetAllCompanies()
+		public IEnumerable<Company> Get1000Companies()
 		{
 			using var connection = new MySqlConnection(ConnectionStrings.Value);
 
 			var query = @$"
 				SELECT *
-				FROM Companies;";
+				FROM Companies
+				LIMIT 1000;";
 
 			var companies = connection.Query<Company>(query);
 
