@@ -11,7 +11,7 @@ namespace Benchmark.Data
 			var connectionString = ConnectionStrings.Value;
 
 			var optionsBuilder = new DbContextOptionsBuilder<EmployeeDbContext>();
-			optionsBuilder.UseMySql(connectionString, serverVersion: ServerVersion.AutoDetect(connectionString));
+			optionsBuilder.UseMySql(connectionString);
 
 			return new EmployeeDbContext(optionsBuilder.Options);
 		}

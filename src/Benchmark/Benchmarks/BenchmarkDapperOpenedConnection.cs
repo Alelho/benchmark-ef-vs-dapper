@@ -6,8 +6,8 @@ using System.Linq;
 
 namespace Benchmark.Benchmarks
 {
-	[Description(".NET 5")]
-	public class BenchmarkNET5 : BenchmarkBase
+	[Description("Dapper Opened Conn")]
+	public class BenchmarkDapperOpenedConnection : BenchmarkBase
 	{
 		[GlobalSetup]
 		public void Setup()
@@ -16,35 +16,35 @@ namespace Benchmark.Benchmarks
 		}
 
 		[Benchmark(Description = "GetEmployeeById")]
-		public Employee NET5GetEmployeeById()
+		public Employee DapperGetEmployeeById()
 		{
 			var employee = new Employee();
 
 			for (var i = 0; i < Count; i++)
 			{
-				employee = _employeeEFCoreRepository.GetEmployeeById(EmployeeId);
+				employee = _employeeDapperOpenedConnRepository.GetEmployee(EmployeeId);
 			}
 
 			return employee;
 		}
 
 		[Benchmark(Description = "GetEmployeeAndCompanyById")]
-		public Employee NET5GetEmployeeAndCompanyById()
+		public Employee DapperGetEmployeeAndCompanyById()
 		{
 			var employee = new Employee();
 
 			for (var i = 0; i < Count; i++)
 			{
-				employee = _employeeEFCoreRepository.GetEmployeeAndCompanyById(EmployeeId);
+				employee = _employeeDapperOpenedConnRepository.GetEmployeeAndCompany(EmployeeId);
 			}
 
 			return employee;
 		}
 
 		[Benchmark(Description = "Get1000Companies")]
-		public ICollection<Company> NET5Get1000Companies()
+		public ICollection<Company> DapperGet1000Companies()
 		{
-			var companies = _companyEFCoreRepository.Get1000Companies();
+			var companies = _companyDapperOpenedConnRepository.Get1000Companies();
 
 			return companies.ToList();
 		}

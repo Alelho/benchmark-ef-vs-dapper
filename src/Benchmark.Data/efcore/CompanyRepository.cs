@@ -1,22 +1,24 @@
 ﻿using Benchmark.Data.Entities;
-using EFCoreUnitOfWork.Interfaces;
-using EFCoreUnitOfWork.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Benchmark.Data.efcore
 {
-	public class CompanyRepository : GenericRepository<Company>, IGenericRepository<Company>
+	public class CompanyRepository
 	{
+		private readonly EmployeeDbContext _dbContext;
+
 		public CompanyRepository(EmployeeDbContext employeeDbContext)
-			: base(employeeDbContext)
 		{
+			_dbContext = employeeDbContext;
 		}
+
+		
 
 		public IEnumerable<Company> Get1000Companies()
 		{
-			return DbContext.Set<Company>()
+			return _dbContext.Set<Company>()
 				.AsNoTracking()
 				.Take(1000)
 				.ToList();

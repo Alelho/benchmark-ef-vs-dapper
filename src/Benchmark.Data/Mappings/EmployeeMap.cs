@@ -31,8 +31,8 @@ namespace Benchmark.Data.Mappings
 				.HasMaxLength(12)
 				.IsRequired();
 
-			builder.Property(e => e.Earnings)
-				.HasPrecision(8, 2);
+			//builder.Property(e => e.Earnings)
+			//	.HasPrecision(8, 2);
 
 			builder.Property(o => o.Position)
 				.HasMaxLength(64);

@@ -3,6 +3,7 @@ using EFCoreUnitOfWork.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Pomelo.EntityFrameworkCore.MySql.Storage;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -24,7 +25,7 @@ namespace Benchmark.Data.Generator
 			services.AddSingleton<IConfiguration>(configuration);
 
 			services.AddDbContext<EmployeeDbContext>(options =>
-				options.UseMySql(connectionString, serverVersion: ServerVersion.AutoDetect(connectionString)));
+				options.UseMySql(connectionString, opt => opt.ServerVersion(ServerVersion.AutoDetect(connectionString))));
 
 			services.AddUnitOfWork<EmployeeDbContext>();
 			services.AddTransient<DbContext, EmployeeDbContext>();
