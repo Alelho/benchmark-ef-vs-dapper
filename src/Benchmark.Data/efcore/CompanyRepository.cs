@@ -14,8 +14,6 @@ namespace Benchmark.Data.efcore
 			_dbContext = employeeDbContext;
 		}
 
-		
-
 		public IEnumerable<Company> Get1000Companies()
 		{
 			return _dbContext.Set<Company>()

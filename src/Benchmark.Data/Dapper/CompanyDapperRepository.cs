@@ -1,30 +1,31 @@
-﻿using Benchmark.Data.Constants;
-using Benchmark.Data.Entities;
+﻿using Benchmark.Data.Entities;
+using Benchmark.Data.Options;
 using Dapper;
-using MySql.Data.MySqlClient;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Benchmark.Data.Dapper
 {
 	public class CompanyDapperRepository
 	{
-		public CompanyDapperRepository()
+		private readonly IDbConnection _connection;
+
+		public CompanyDapperRepository(IOptions<ConnectionOptions> connectionOptions)
 		{
+			_connection = connectionOptions.Value.Connection;
 		}
 
 		public IEnumerable<Company> Get1000Companies()
 		{
-			using (var connection = new MySqlConnection(ConnectionStrings.Value))
-			{
-				var query = @"
+			var query = @"
 				SELECT *
 				FROM Companies
 				LIMIT 1000;";
 
-				var companies = connection.Query<Company>(query);
+			var companies = _connection.Query<Company>(query);
 
-				return companies;
-			}
+			return companies;
 		}
 	}
 }

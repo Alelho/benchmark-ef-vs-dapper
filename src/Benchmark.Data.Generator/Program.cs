@@ -25,7 +25,7 @@ namespace Benchmark.Data.Generator
 			services.AddSingleton<IConfiguration>(configuration);
 
 			services.AddDbContext<EmployeeDbContext>(options =>
-				options.UseMySql(connectionString, opt => opt.ServerVersion(ServerVersion.AutoDetect(connectionString))));
+				options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 			services.AddUnitOfWork<EmployeeDbContext>();
 			services.AddTransient<DbContext, EmployeeDbContext>();

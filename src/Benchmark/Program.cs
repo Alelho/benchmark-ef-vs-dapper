@@ -1,12 +1,14 @@
-﻿using Benchmark.Data;
+﻿using Benchmark.Benchmarks;
+using Benchmark.Data;
 using Benchmark.Data.Constants;
 using Benchmark.Data.Dapper;
-using Benchmark.Data.DapperOpenedConnection;
 using Benchmark.Data.efcore;
+using Benchmark.Data.Options;
+using BenchmarkDotNet.Running;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using MySql.Data.MySqlClient;
-using Pomelo.EntityFrameworkCore.MySql.Storage;
+using MySqlConnector;
+using System;
 
 namespace Benchmark
 {
@@ -22,8 +24,9 @@ namespace Benchmark
 
 			var services = new ServiceCollection();
 
+			services.Configure<ConnectionOptions>(o => o.Connection = connection);
 			services.AddDbContext<EmployeeDbContext>(options =>
-				options.UseMySql(connectionString, opt => opt.ServerVersion(ServerVersion.AutoDetect(connection))));
+				options.UseMySql(connectionString, ServerVersion.AutoDetect(connection)));
 
 			services.AddTransient<DbContext, EmployeeDbContext>();
 
@@ -31,8 +34,6 @@ namespace Benchmark
 			services.AddTransient<CompanyRepository>();
 			services.AddTransient<EmployeeDapperRepository>();
 			services.AddTransient<CompanyDapperRepository>();
-			services.AddTransient(provider => new CompanyDapperOpenedConnRepository(connection));
-			services.AddTransient(provider => new EmployeeDapperOpenedConnRepository(connection));
 
 			var serviceProvider = services.BuildServiceProvider();
 
@@ -41,9 +42,6 @@ namespace Benchmark
 
 			var companyDapperRepository = serviceProvider.GetService<CompanyDapperRepository>();
 			var employeeDapperRepository = serviceProvider.GetService<EmployeeDapperRepository>();
-
-			var companyDapperOpenedConnRepository = serviceProvider.GetService<CompanyDapperOpenedConnRepository>();
-			var employeeDapperOpenedConnRepository = serviceProvider.GetService<EmployeeDapperOpenedConnRepository>();
 
 			var employee = employeeEfCoreRepository.GetEmployeeById(10);
 			var employeeAndCompany = employeeEfCoreRepository.GetEmployeeAndCompanyById(5);
